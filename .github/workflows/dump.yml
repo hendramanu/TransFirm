@@ -1,0 +1,36 @@
+name: TransFirm
+
+on:
+  workflow_dispatch:
+
+    inputs:
+      DEVICE_MODEL:
+        description: "Device Model"
+        required: true
+        default: SM-J400F
+      DEVICE_REGION:
+        description: "Device Region"
+        required: true
+        default: XID
+
+jobs:
+  PostJob:
+
+    runs-on: ubuntu-latest
+
+    env:
+      DEVICE_MODEL: ${{ github.event.inputs.DEVICE_MODEL }}
+      DEVICE_REGION: ${{ github.event.inputs.DEVICE_REGION }}
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Setting up
+        run: ./setup.sh
+
+      - name: Downloading Firmware
+        run: ./download.sh
+
+      - name: Uploading Firmware
+        run: ./upload.sh
